@@ -1102,7 +1102,9 @@ jobs:
       - name: Get Quarkus version
         id: get-quarkus-version
         run: |
-          echo "quarkus-version=$(./mvnw help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_OUTPUT
+          quarkus_version="$(./mvnw help:evaluate -Dexpression=project.version -q -DforceStdout | sed '/^\[/d' | sed '/^$/d' | tail -n1)"
+          test -n "$quarkus_version"
+          echo "quarkus-version=${quarkus_version}" >> "$GITHUB_OUTPUT"
       - name: Compile Quickstarts
         env:
           CAPTURE_BUILD_SCAN: true
@@ -1200,7 +1202,9 @@ jobs:
       - name: Get Quarkus version
         id: get-quarkus-version
         run: |
-          echo "quarkus-version=$(./mvnw help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_OUTPUT
+          quarkus_version="$(./mvnw help:evaluate -Dexpression=project.version -q -DforceStdout | sed '/^\[/d' | sed '/^$/d' | tail -n1)"
+          test -n "$quarkus_version"
+          echo "quarkus-version=${quarkus_version}" >> "$GITHUB_OUTPUT"
       - name: Test Platform
         env:
           CAPTURE_BUILD_SCAN: true
